@@ -1,25 +1,105 @@
 {% block header %}
-<header>
-	<nav class="navbar navbar-expand-lg navbar-light">
-		<img src="{{ asset('asset/img/logo.png') }}" style="width:100px">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse " id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="#">Accueil
-						<span class="sr-only">(current)</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Actualité</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Les sorties</a>
-				</li>
-			</ul>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<img src="{{ asset('asset/img/logo.png') }}" style="width:100px">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse " id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Accueil
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Actualité</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Les sorties</a>
+					</li>
+				</ul>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#SeConnecter" style="margin-right:1%">Se Connecter</button>
+				<button class="btn btn-outline-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#Sinscrire">S'inscrire</button>
+			</div>
+		</nav>
+		<!-- Modal connexion -->
+		<div class="modal fade" id="SeConnecter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Connexion</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div
+						class="modal-body">
+						<!-- Formulaire Connexion-->
+						<form>
+							<div class="form-group">
+								<label for="pseudo">Pseudo</label>
+								<input type="email" class="form-control" id="pseudo" aria-describedby="emailHelp">
+							</div>
+							<div class="form-group">
+								<label for="Password">Mot de passe</label>
+								<input type="password" class="form-control" id="Password">
+							</div>
+							<div class="form-group form-check">
+								<input type="checkbox" class="form-check-input">
+								<small class="form-check-label">Garder mes identifiants</small>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+								<button type="button" class="btn btn-success">Connexion</button>
+							</div>
+						</form>
+					</div>
+					<!-- /Formulaire Connexion-->
+				</div>
+			</div>
 		</div>
-	</nav>
-</header>
+		<!-- /Modal connexion -->
+
+		<!-- Modal Inscription -->
+		<div class="modal fade" id="Sinscrire" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Inscription</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div
+						class="modal-body">
+						<!-- Formulaire Inscription-->
+						<form>
+							<label for="exampleInputEmail1">Email</label>
+							<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+							<small id="emailHelp" class="form-text text-muted">L'E-mail ne sera pas partagé a des tiers.</small>
+							<div class="form-group">
+								<label for="pseudo">Pseudo</label>
+								<input type="email" class="form-control" id="pseudo" aria-describedby="emailHelp">
+							</div>
+							<div class="form-group">
+								<label for="Password">Mot de passe</label>
+								<input type="password" class="form-control" id="Password">
+							</div>
+							<div class="form-group">
+								<label for="Password">Confirmation du mot de passe</label>
+								<input type="password" class="form-control" id="Password">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+								<button type="button" class="btn btn-success">Valider</button>
+							</div>
+						</form>
+					</div>
+					<!-- /Formulaire Inscription-->
+				</div>
+			</div>
+		</div>
+		<!-- /Modal connexion -->
+	</header>
 {% endblock %}
