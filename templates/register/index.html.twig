@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% include "header.html.twig" %}
+	<div class="container">
+		{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+		{{ form_label(form.username, "Pseudo", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+		{{ form_widget(form.username) }}
+		
+		{{ form_label(form.Email, "E-Mail", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+		{{ form_widget(form.Email) }}
+
+		{{ form_label(form.Password, "Mot de passe", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+		{{ form_widget(form.Password) }}
+
+		{{ form_widget(form.Valider) }}
+
+		{{ form_end(form) }}
+	</div>
+
+	{% include "footer.html.twig" %}
+{% endblock %}

@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -18,11 +19,6 @@ class User
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $role;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,57 +31,44 @@ class User
     private $email;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $image;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="id_user")
-     */
-    private $articles;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="id_user")
-     */
-    private $sorties;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="id_user")
-     */
-    private $commentaries;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="text", nullable=false)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $role = [];
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="users")
+     */
+    private $sortie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="user")
+     */
+    private $article;
+
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
-        $this->sorties = new ArrayCollection();
-        $this->commentaries = new ArrayCollection();
+        $this->sortie = new ArrayCollection();
+        $this->article = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRole(): ?int
-    {
-        return $this->role;
-    }
-
-    public function setRole(int $role): self
-    {
-        $this->role = $role;
-
-        return $this;
     }
 
     public function getUsername(): ?string
@@ -112,6 +95,30 @@ class User
         return $this;
     }
 
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     public function getImage(): ?string
     {
         return $this->image;
@@ -124,14 +131,43 @@ class User
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getRole(): ?array
     {
-        return $this->active;
+        return $this->role;
     }
 
-    public function setActive(bool $active): self
+    public function setRole(array $role): self
     {
-        $this->active = $active;
+        $this->role = $role;
+        
+        return $this;
+    }
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+    /**
+     * @return Collection|sortie[]
+     */
+    public function getSortie(): Collection
+    {
+        return $this->sortie;
+    }
+
+    public function addSortie(sortie $sortie): self
+    {
+        if (!$this->sortie->contains($sortie)) {
+            $this->sortie[] = $sortie;
+        }
+
+        return $this;
+    }
+
+    public function removeSortie(sortie $sortie): self
+    {
+        if ($this->sortie->contains($sortie)) {
+            $this->sortie->removeElement($sortie);
+        }
 
         return $this;
     }
@@ -139,16 +175,16 @@ class User
     /**
      * @return Collection|Article[]
      */
-    public function getArticles(): Collection
+    public function getArticle(): Collection
     {
-        return $this->articles;
+        return $this->article;
     }
 
     public function addArticle(Article $article): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->setIdUser($this);
+        if (!$this->article->contains($article)) {
+            $this->article[] = $article;
+            $article->setUser($this);
         }
 
         return $this;
@@ -156,85 +192,23 @@ class User
 
     public function removeArticle(Article $article): self
     {
-        if ($this->articles->contains($article)) {
-            $this->articles->removeElement($article);
+        if ($this->article->contains($article)) {
+            $this->article->removeElement($article);
             // set the owning side to null (unless already changed)
-            if ($article->getIdUser() === $this) {
-                $article->setIdUser(null);
+            if ($article->getUser() === $this) {
+                $article->setUser(null);
             }
         }
 
         return $this;
     }
-
-    /**
-     * @return Collection|Sortie[]
-     */
-    public function getSorties(): Collection
+    public function eraseCredentials()
     {
-        return $this->sorties;
     }
-
-    public function addSorty(Sortie $sorty): self
+    public function getSalt()
     {
-        if (!$this->sorties->contains($sorty)) {
-            $this->sorties[] = $sorty;
-            $sorty->addIdUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSorty(Sortie $sorty): self
-    {
-        if ($this->sorties->contains($sorty)) {
-            $this->sorties->removeElement($sorty);
-            $sorty->removeIdUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Commentary[]
-     */
-    public function getCommentaries(): Collection
-    {
-        return $this->commentaries;
-    }
-
-    public function addCommentary(Commentary $commentary): self
-    {
-        if (!$this->commentaries->contains($commentary)) {
-            $this->commentaries[] = $commentary;
-            $commentary->setIdUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentary(Commentary $commentary): self
-    {
-        if ($this->commentaries->contains($commentary)) {
-            $this->commentaries->removeElement($commentary);
-            // set the owning side to null (unless already changed)
-            if ($commentary->getIdUser() === $this) {
-                $commentary->setIdUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
     }
 }

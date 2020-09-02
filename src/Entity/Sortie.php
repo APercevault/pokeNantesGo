@@ -49,9 +49,15 @@ class Sortie
      */
     private $date;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="sortie")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->id_user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,6 +147,34 @@ class Sortie
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addSortie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeSortie($this);
+        }
 
         return $this;
     }
