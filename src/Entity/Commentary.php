@@ -18,47 +18,23 @@ class Commentary
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="commentaries")
-     */
-    private $id_user;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=article::class, inversedBy="commentaries")
-     */
-    private $id_article;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $content;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="commentaries")
+     */
+    private $article;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commentaries")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdUser(): ?user
-    {
-        return $this->id_user;
-    }
-
-    public function setIdUser(?user $id_user): self
-    {
-        $this->id_user = $id_user;
-
-        return $this;
-    }
-
-    public function getIdArticle(): ?article
-    {
-        return $this->id_article;
-    }
-
-    public function setIdArticle(?article $id_article): self
-    {
-        $this->id_article = $id_article;
-
-        return $this;
     }
 
     public function getContent(): ?string
@@ -69,6 +45,30 @@ class Commentary
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

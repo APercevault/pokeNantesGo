@@ -41,7 +41,7 @@ class User implements UserInterface
     private $status;
 
     /**
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $image;
 
@@ -51,19 +51,25 @@ class User implements UserInterface
     private $role = [];
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="users")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="user")
      */
-    private $sortie;
+    private $sorties;
 
     /**
      * @ORM\OneToMany(targetEntity=Article::class, mappedBy="user")
      */
-    private $article;
+    private $articles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="user")
+     */
+    private $commentaries;
 
     public function __construct()
     {
-        $this->sortie = new ArrayCollection();
-        $this->article = new ArrayCollection();
+        $this->sorties = new ArrayCollection();
+        $this->articles = new ArrayCollection();
+        $this->commentaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,69 +145,15 @@ class User implements UserInterface
     public function setRole(array $role): self
     {
         $this->role = $role;
-        
+
         return $this;
     }
     public function getRoles()
     {
         return array('ROLE_USER');
     }
-    /**
-     * @return Collection|sortie[]
-     */
-    public function getSortie(): Collection
-    {
-        return $this->sortie;
-    }
 
-    public function addSortie(sortie $sortie): self
-    {
-        if (!$this->sortie->contains($sortie)) {
-            $this->sortie[] = $sortie;
-        }
 
-        return $this;
-    }
-
-    public function removeSortie(sortie $sortie): self
-    {
-        if ($this->sortie->contains($sortie)) {
-            $this->sortie->removeElement($sortie);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Article[]
-     */
-    public function getArticle(): Collection
-    {
-        return $this->article;
-    }
-
-    public function addArticle(Article $article): self
-    {
-        if (!$this->article->contains($article)) {
-            $this->article[] = $article;
-            $article->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): self
-    {
-        if ($this->article->contains($article)) {
-            $this->article->removeElement($article);
-            // set the owning side to null (unless already changed)
-            if ($article->getUser() === $this) {
-                $article->setUser(null);
-            }
-        }
-
-        return $this;
-    }
     public function eraseCredentials()
     {
     }
@@ -210,5 +162,95 @@ class User implements UserInterface
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSorty(Sortie $sorty): self
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sortie $sorty): self
+    {
+        if ($this->sorties->contains($sorty)) {
+            $this->sorties->removeElement($sorty);
+            $sorty->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            // set the owning side to null (unless already changed)
+            if ($article->getUser() === $this) {
+                $article->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentary[]
+     */
+    public function getCommentaries(): Collection
+    {
+        return $this->commentaries;
+    }
+
+    public function addCommentary(Commentary $commentary): self
+    {
+        if (!$this->commentaries->contains($commentary)) {
+            $this->commentaries[] = $commentary;
+            $commentary->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentary(Commentary $commentary): self
+    {
+        if ($this->commentaries->contains($commentary)) {
+            $this->commentaries->removeElement($commentary);
+            // set the owning side to null (unless already changed)
+            if ($commentary->getUser() === $this) {
+                $commentary->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

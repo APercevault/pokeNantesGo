@@ -15,14 +15,18 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
             anonymous: true
             lazy: true
             provider: in_database
             form_login:
-                login_path: security_login
-                check_path: security_login
+                login_path: app_login
+                check_path: app_login
             logout:
-                path: security_logout
+                path: app_logout
                 target: home
             guard:
                 authenticators:
@@ -38,4 +42,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/profil, roles: ROLE_USER }

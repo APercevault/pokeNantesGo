@@ -20,11 +20,6 @@ class Article
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
-     */
-    private $id_user;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -35,7 +30,7 @@ class Article
     private $content;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     private $image;
 
@@ -45,14 +40,14 @@ class Article
     private $active;
 
     /**
-     * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="id_article")
-     */
-    private $commentaries;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="article")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentary::class, mappedBy="article")
+     */
+    private $commentaries;
 
     public function __construct()
     {
@@ -62,18 +57,6 @@ class Article
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdUser(): ?User
-    {
-        return $this->id_user;
-    }
-
-    public function setIdUser(?User $id_user): self
-    {
-        $this->id_user = $id_user;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -124,6 +107,18 @@ class Article
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Commentary[]
      */
@@ -136,7 +131,7 @@ class Article
     {
         if (!$this->commentaries->contains($commentary)) {
             $this->commentaries[] = $commentary;
-            $commentary->setIdArticle($this);
+            $commentary->setArticle($this);
         }
 
         return $this;
@@ -147,22 +142,10 @@ class Article
         if ($this->commentaries->contains($commentary)) {
             $this->commentaries->removeElement($commentary);
             // set the owning side to null (unless already changed)
-            if ($commentary->getIdArticle() === $this) {
-                $commentary->setIdArticle(null);
+            if ($commentary->getArticle() === $this) {
+                $commentary->setArticle(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

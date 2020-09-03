@@ -20,11 +20,6 @@ class Sortie
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=user::class, inversedBy="sorties")
-     */
-    private $id_user;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -37,7 +32,7 @@ class Sortie
     /**
      * @ORM\Column(type="integer")
      */
-    private $number_user;
+    private $numberUser;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,50 +40,23 @@ class Sortie
     private $location;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="sortie")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="sorties")
      */
-    private $users;
+    private $user;
 
     public function __construct()
     {
-        $this->id_user = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection|user[]
-     */
-    public function getIdUser(): Collection
-    {
-        return $this->id_user;
-    }
-
-    public function addIdUser(user $idUser): self
-    {
-        if (!$this->id_user->contains($idUser)) {
-            $this->id_user[] = $idUser;
-        }
-
-        return $this;
-    }
-
-    public function removeIdUser(user $idUser): self
-    {
-        if ($this->id_user->contains($idUser)) {
-            $this->id_user->removeElement($idUser);
-        }
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -117,12 +85,12 @@ class Sortie
 
     public function getNumberUser(): ?int
     {
-        return $this->number_user;
+        return $this->numberUser;
     }
 
-    public function setNumberUser(int $number_user): self
+    public function setNumberUser(int $numberUser): self
     {
-        $this->number_user = $number_user;
+        $this->numberUser = $numberUser;
 
         return $this;
     }
@@ -154,16 +122,15 @@ class Sortie
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getUser(): Collection
     {
-        return $this->users;
+        return $this->user;
     }
 
     public function addUser(User $user): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addSortie($this);
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
         }
 
         return $this;
@@ -171,9 +138,8 @@ class Sortie
 
     public function removeUser(User $user): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeSortie($this);
+        if ($this->user->contains($user)) {
+            $this->user->removeElement($user);
         }
 
         return $this;
