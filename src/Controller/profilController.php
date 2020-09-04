@@ -2,18 +2,16 @@
 // src/Controller/profilController.php
 namespace App\Controller;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -31,29 +29,22 @@ class profilController extends AbstractController
         $form = $this->createFormBuilder($profil)
             ->add('username', TextType::class)
             ->add('email', TextType::class)
-            ->add('password', PasswordType::class)
             ->add('image', FileType::class, [
+                'data_class' => null,
                 'label' => 'Image',
-
-                // unmapped means that this field is not associated to any entity property
-                'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
-
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
+                        'maxSizeMessage' => "Le fichier est trop lourd.",
                         'mimeTypes' => [
                             'image/*'
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image document',
+                        'mimeTypesMessage' => "Ce fichier n'est pas une image valide.",
                     ])
                 ],
             ])
+
             ->add('valider', SubmitType::class)
 
             ->getForm();
@@ -63,8 +54,6 @@ class profilController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $username = $form->get("username")->getData();
-            $Password = $form->get("password")->getData();
-            $Password = $passwordEncoder->encodePassword($profil, $Password);
             $Email = $form->get("email")->getData();
             $Image = $form->get("image")->getData();
 
@@ -82,7 +71,7 @@ class profilController extends AbstractController
                     $path = $this->getParameter('images_directory');
                     $fs = new Filesystem();
                     $fs->remove($path);
-                    
+
                     $Image->move(
                         $this->getParameter('images_directory'),
                         $newFilename
@@ -94,10 +83,9 @@ class profilController extends AbstractController
                 // updates the 'ImageFilename' property to store the PDF file name
                 // instead of its contents
 
-                $profil->setImage($Image);
+                $profil->setImage($newFilename);
             }
             $profil->setUsername($username);
-            $profil->setPassword($Password);
             $profil->setEmail($Email);
 
 
@@ -106,11 +94,35 @@ class profilController extends AbstractController
             $entityManager->flush();
         }
 
+        $form2 = $this->createFormBuilder($profil)
+        ->add('password', RepeatedType::class, array(
+            'type' => PasswordType::class,
+            'invalid_message' => 'Les mots de passe doivent être identique.',
+            'first_options'  => array('label' => 'Mot de passe'),
+            'second_options' => array('label' => 'Répeter le mot de passe'),
+        ))
 
+        ->add('valider', SubmitType::class)
 
+        ->getForm();
+
+    $form2->handleRequest($request);
+
+    if ($form2->isSubmitted() && $form2->isValid()) {
+
+        $Password = $form2->get("password")->getData();
+        $Password = $passwordEncoder->encodePassword($profil, $Password);
+
+        $profil->setPassword($Password);
+
+        $entityManager  = $this->getDoctrine()->getManager();
+        $entityManager->persist($profil);
+        $entityManager->flush();
+    }
 
         return $this->render('profil/index.html.twig', [
             'form' => $form->createView(),
+            'form' => $form2->createView(),
         ]);
     }
 }
