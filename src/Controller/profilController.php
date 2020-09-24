@@ -46,6 +46,8 @@ class profilController extends AbstractController
             ->add('valider', SubmitType::class)
             ->getForm();
 
+        $currentImage = $profil->getImage();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,16 +58,20 @@ class profilController extends AbstractController
 
             // this condition is needed because the 'Image' field is not required
             // so the Image file must be processed only when a file is uploaded
+
             if ($Image) {
+
                 $originalFilename = pathinfo($Image->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $slugger = new AsciiSlugger();
                 $safeFilename = $slugger->slug($originalFilename);
 
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $Image->guessExtension();
+                $newFilename = $safeFilename . '-'. uniqid() .'.' . $Image->guessExtension();
                 // Move the file to the directory where Images are stored
                 try {
-                    $path = $this->getParameter('images_directory');
+                    
+                    $path = $this->getParameter('images_directory').'/'.$currentImage;
+                    dump($path);
                     $fs = new Filesystem();
                     $fs->remove($path);
 
@@ -92,5 +98,5 @@ class profilController extends AbstractController
         return $this->render('profil/index.html.twig', [
             'form' => $form->createView(),
         ]);
-    }}
-
+    }
+}

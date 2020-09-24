@@ -57,6 +57,8 @@ class registerController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            return
+            $this->redirectToRoute('home');
         }
         return $this->render('register/index.html.twig', array(
             'form' => $form->createView(),

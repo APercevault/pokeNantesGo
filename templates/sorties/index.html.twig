@@ -54,17 +54,27 @@
 				{% for sortie in sorties %}
 					<div class="col-12 col-xl-4 row">
 						<div class="col-2">
-							<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
+							{% for user in sortie.user %}
+								<img class="img-fluid" src="{{ asset('asset/uploads/img/' ~ user.image) }}">
+							{% endfor %}
 						</div>
 						<div class="col-10">
-							<h6>{{ sortie.title }}</h6>
+							<h5>{{ sortie.title }}</h5>
+							
+								{% for user in sortie.user %}
+									<h6>{{ user.username }}</h6>
+								{% endfor %}
+						
 							<p>{{ sortie.content }}</p>
-							<p >1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
-							<i style="margin-left:3%" class="fas fa-user-plus"></i><i style="margin-left:3%" class="fas fa-user-minus"></i></p>
+							<p>{{ sortie.location }} | {{ sortie.date|format_datetime('full', 'short', locale='fr') }}</p>
+							<p>1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
+								<i style="margin-left:3%" class="fas fa-user-plus"></i>
+								<i style="margin-left:3%" class="fas fa-user-minus"></i>
+							</p>
 						</div>
 					</div>
 				{% endfor %}
-			
+
 				<!-- Pagination -->
 				<nav aria-label="..." class="col-12 d-flex justify-content-center">
 					<ul class="pagination">
