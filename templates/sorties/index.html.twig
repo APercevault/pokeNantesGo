@@ -51,89 +51,22 @@
 	<section id="list-sortie">
 		<div class="container">
 			<div class="col-12 row d-flex justify-content-around" style="padding-top:2%">
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
+				{% for sortie in sorties %}
+					<div class="col-12 col-xl-4 row">
+						<div class="col-2">
+							<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
+						</div>
+						<div class="col-10">
+							<h6>{{ sortie.title }}</h6>
+							<p>{{ sortie.content }}</p>
+							<p >1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
+							<i style="margin-left:3%" class="fas fa-user-plus"></i><i style="margin-left:3%" class="fas fa-user-minus"></i></p>
+						</div>
 					</div>
-					<div class="col-10">
-						<h6>Sortie team mystique</h6>
-						<p>Nous sommes 2 a l'arenes de croix bonneaux pour giratina nous recherchons du monde pour samedi ^^</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie</h6>
-						<p>Bonjour, je cherche ces deux joueurs si possible, on joue dans le même coin</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie procé</h6>
-						<p>Salut à tous ! 😁 Étant donné que ce week-end il y a double XP sur les cadeaux, je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi !! Je joue tous les jours, j’envoie des cadeaux au maximum !!</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie team mystique</h6>
-						<p>Nous sommes 2 a l'arenes de croix bonneaux pour giratina nous recherchons du monde pour samedi ^^</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie</h6>
-						<p>Bonjour, je cherche ces deux joueurs si possible, on joue dans le même coin</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie procé</h6>
-						<p>Salut à tous ! 😁 Étant donné que ce week-end il y a double XP sur les cadeaux, je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi !! Je joue tous les jours, j’envoie des cadeaux au maximum !!</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie team mystique</h6>
-						<p>Nous sommes 2 a l'arenes de croix bonneaux pour giratina nous recherchons du monde pour samedi ^^</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie</h6>
-						<p>Bonjour, je cherche ces deux joueurs si possible, on joue dans le même coin</p>
-					</div>
-				</div>
-				<div class="col-12 col-xl-4 row">
-					<div class="col-2">
-						<img class="img-fluid" src="{{ asset('asset/img/img-profil.png') }}">
-					</div>
-					<div class="col-10">
-						<h6>Sortie procé</h6>
-						<p>Salut à tous ! 😁 Étant donné que ce week-end il y a double XP sur les cadeaux, je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi  je vous passe mon code dresseur, ajoutez-moi !! Je joue tous les jours, j’envoie des cadeaux au maximum !!</p>
-					</div>
-				</div>
+				{% endfor %}
+			
 				<!-- Pagination -->
-				<nav aria-label="...">
+				<nav aria-label="..." class="col-12 d-flex justify-content-center">
 					<ul class="pagination">
 						<li class="page-item disabled">
 							<a class="page-link" href="#" tabindex="-1">Previous</a>

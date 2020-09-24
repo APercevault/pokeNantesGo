@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% include "header.html.twig" %}
+	<section id="list-sortie" style="padding-bottom:3%">
+		<div class="col-12 row d-flex justify-content-around" style="padding-top:2%">
+			{% for sortie in userSorties.sorties %}
+				<div class="card" style="width: 18rem;">
+					<div class="card-body row" style="margin-top:5%">
+						<div class="col-2">
+							<img class="img-fluid" src="{{ asset('asset/uploads/img/' ~ userSorties.image) }}">
+						</div>
+						<div class="col-10">
+							<h5 class="card-title d-flex justify-content-between">{{ sortie.title }}
+								<div>
+									<i class="fas fa-pen" style="color:#4BC068"></i>
+									<i class="far fa-times-circle" style="color:#D93F1F"></i>
+								</div>
+
+							</h5>
+							<h6 class="card-subtitle mb-2 text-muted">{{ userSorties.username }}</h6>
+							<p class="card-text">{{ sortie.content }}</p>
+							<p href="#" class="card-link">1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
+							</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<a href='{{ asset('createSortie') }}' class="d-flex justify-content-center" style="margin-top:1%">
+			<button type="button" class="btn btn-info">Créer une sortie</button>
+		</a>
+	</section>
+
+	{% include "footer.html.twig" %}
+{% endblock %}

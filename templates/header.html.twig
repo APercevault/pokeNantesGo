@@ -8,7 +8,7 @@
 			<div class="collapse navbar-collapse " id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link" href="#">Accueil
+						<a class="nav-link" href="{{ asset('home') }}">Accueil
 							<span class="sr-only">(current)</span>
 						</a>
 					</li>
@@ -20,11 +20,14 @@
 					</li>
 
 					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ asset('mesSorties') }}">Mes sorties</a>
+						</li>
 					</ul>
 					<div class="row" style="margin-bottom:0px">
 						<div class="col-6 d-flex justify-content-end">
-							{# <img class="profil" src="{{ asset('asset/uploads/img/' ~ app.user.image) }}"> #}
-							
+							<img class="profil" src="{{ asset('asset/uploads/img/' ~ app.user.image) }}">
+
 						</div>
 						<div class="row col-6 d-flex align-items-center">
 							<button class="btn btn-outline-success my-2 my-sm-0 col-12" type="button" style="margin-right:1%" onclick="window.location.href='{{ asset('profil') }}'">Profil

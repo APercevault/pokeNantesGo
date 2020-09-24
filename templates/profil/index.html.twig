@@ -2,6 +2,19 @@
 
 {% block body %}
 	{% include "header.html.twig" %}
-{{ form(form) }}
+	<div class="container">
+		{{ form_start(form) }}
+		{{ form_row(form.username) }}
+		{{ form_row(form.email) }}
+		{{ form_row(form.image) }}
+		<div class="row">
+			<a style="margin-right:2%" href='{{ asset('mdp') }}'>
+				<button type="button" class="btn btn-info">Changer de mot de passe</button>
+			</a>
+			{{ form_row(form.valider, {'attr': {'class': 'btn btn-success'}}) }}
+		</div>
+		{{ form_end(form) }}
+
+	</div>
 	{% include "footer.html.twig" %}
 {% endblock %}

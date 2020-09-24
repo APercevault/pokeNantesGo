@@ -10,8 +10,6 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -46,7 +44,6 @@ class profilController extends AbstractController
             ])
 
             ->add('valider', SubmitType::class)
-
             ->getForm();
 
         $form->handleRequest($request);
@@ -88,41 +85,12 @@ class profilController extends AbstractController
             $profil->setUsername($username);
             $profil->setEmail($Email);
 
-
             $entityManager  = $this->getDoctrine()->getManager();
             $entityManager->persist($profil);
             $entityManager->flush();
         }
-
-        $form2 = $this->createFormBuilder($profil)
-        ->add('password', RepeatedType::class, array(
-            'type' => PasswordType::class,
-            'invalid_message' => 'Les mots de passe doivent être identique.',
-            'first_options'  => array('label' => 'Mot de passe'),
-            'second_options' => array('label' => 'Répeter le mot de passe'),
-        ))
-
-        ->add('valider', SubmitType::class)
-
-        ->getForm();
-
-    $form2->handleRequest($request);
-
-    if ($form2->isSubmitted() && $form2->isValid()) {
-
-        $Password = $form2->get("password")->getData();
-        $Password = $passwordEncoder->encodePassword($profil, $Password);
-
-        $profil->setPassword($Password);
-
-        $entityManager  = $this->getDoctrine()->getManager();
-        $entityManager->persist($profil);
-        $entityManager->flush();
-    }
-
         return $this->render('profil/index.html.twig', [
             'form' => $form->createView(),
-            'form' => $form2->createView(),
         ]);
-    }
-}
+    }}
+

@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% include "header.html.twig" %}
+	<div class="container">
+		{{ form_start(form) }}
+		{{ form_row(form.password) }}
+		<div class="row">
+		
+			{{ form_row(form.valider, {'attr': {'class': 'btn btn-success margin-right'}}) }}
+			<a  href='{{ asset('profil') }}'>
+				<button type="button" class="btn btn-dark">retour</button>
+			</a>
+		</div>
+		{{ form_end(form) }}
+	</div>
+	{% include "footer.html.twig" %}
+{% endblock %}

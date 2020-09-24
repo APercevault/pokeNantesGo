@@ -49,11 +49,11 @@ class registerController extends AbstractController
             $user->setEmail($Email);
             $user->setStatus(false);
             $user->setRole(array('ROLE_USER'));
-            
+
             // Encode le mot de passe
             $Password = $passwordEncoder->encodePassword($user, $Password);
             $user->setPassword($Password);
-            
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
