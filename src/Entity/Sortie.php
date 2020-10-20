@@ -49,6 +49,11 @@ class Sortie
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $MainUser;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -141,6 +146,18 @@ class Sortie
         if ($this->user->contains($user)) {
             $this->user->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getMainUser(): ?string
+    {
+        return $this->MainUser;
+    }
+
+    public function setMainUser(string $MainUser): self
+    {
+        $this->MainUser = $MainUser;
 
         return $this;
     }

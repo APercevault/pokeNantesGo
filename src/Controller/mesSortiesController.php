@@ -15,12 +15,14 @@ class mesSortiesController extends AbstractController
     public function mesSortie(UserRepository $userRepository)
     {
         $userId = $this->getUser()->getId();
+        $userUsername = $this->getUser()->getUsername();
         $userSorties = $userRepository->findOneBy(['id'=>$userId]);
-        // faire un for each
 
+        
         return $this->render(
             'mesSorties/index.html.twig',
-            array('userSorties' => $userSorties)
+            array('userSorties' => $userSorties,
+            'userUsername' => $userUsername)
         );
     }
 }

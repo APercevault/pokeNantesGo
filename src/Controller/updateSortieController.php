@@ -1,9 +1,10 @@
 <?php
-// src/Controller/createSortieController.php
+// src/Controller/updateSortieController.php
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Sortie;
+use App\Repository\SortieRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -15,14 +16,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class createSortieController extends AbstractController
+class updateSortieController extends AbstractController
 {
     /**
-     * @Route("/createSortie", name="createSortie")
+     * @Route("/updateSortie/{id}", name="updateSortie")
      */
-    public function createSortie(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function updateSortie(Sortie $sortie, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $sortie = new Sortie();
         $user = $this->getUser();
         // On crée le FormBuilder grâce au service form factory
         $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $sortie);
@@ -38,12 +38,9 @@ class createSortieController extends AbstractController
 
         // À partir du formBuilder, on génère le formulaire
         $form = $formBuilder->getForm();
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
 
             $title = $form->get("title")->getData();
             $content = $form->get("content")->getData();
@@ -56,7 +53,6 @@ class createSortieController extends AbstractController
             $sortie->setLocation($location);
             $sortie->setNumberUser($numberUser);
             $sortie->setDate($date);
-            $sortie->setMainUser($user->getUsername());
             $sortie->addUser($user);
 
             $em = $this->getDoctrine()->getManager();
@@ -68,7 +64,7 @@ class createSortieController extends AbstractController
 
         return
             $this->render(
-                'createSortie/index.html.twig',
+                'updateSortie/index.html.twig',
                 array(
                     'form' => $form->createView(),
                 ),

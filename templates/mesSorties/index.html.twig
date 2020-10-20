@@ -13,14 +13,27 @@
 						<div class="col-10">
 							<h5 class="card-title d-flex justify-content-between">{{ sortie.title }}
 								<div>
-									<i class="fas fa-pen" style="color:#4BC068"></i>
-									<i class="far fa-times-circle" style="color:#D93F1F"></i>
+									{% if sortie.MainUser == userSorties.username %}
+									
+									<a href='{{ url('updateSortie',{"id":sortie.id}) }}'>
+										<i class="fas fa-pen" style="color:#4BC068"></i>
+									</a>
+									<a href='{{ url('deleteSortie',{"id":sortie.id}) }}'>
+										<i class="far fa-times-circle" style="color:#D93F1F"></i>
+									</a>
+									{% endif %}
 								</div>
-
 							</h5>
-							<h6 class="card-subtitle mb-2 text-muted">{{ userSorties.username }}</h6>
+							<h6 class="card-subtitle mb-2 text-muted">{{ sortie.MainUser }}</h6>
 							<p class="card-text">{{ sortie.content }}</p>
-							<p href="#" class="card-link">1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
+							<p class="card-text">{{ sortie.date|format_datetime('full', 'short', locale='fr') }}</p>
+							<p href="#" class="card-link">
+								{% set count = 0 %}
+								{% for user in sortie.user %}
+									{% set count = count + 1 %}
+								{% endfor %}
+								{{ count }}
+								/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
 							</p>
 						</div>
 					</div>

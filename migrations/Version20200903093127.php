@@ -29,7 +29,7 @@ final class Version20200903093127 extends AbstractMigration
         $this->addSql('ALTER TABLE commentary ADD CONSTRAINT FK_1CAC12CAA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE sortie_user ADD CONSTRAINT FK_8A67684ACC72D953 FOREIGN KEY (sortie_id) REFERENCES sortie (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE sortie_user ADD CONSTRAINT FK_8A67684AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE user CHANGE image image LONGTEXT NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE image image LONGTEXT NULL');
     }
 
     public function down(Schema $schema) : void

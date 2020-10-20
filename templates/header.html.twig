@@ -5,22 +5,22 @@
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse " id="navbarSupportedContent">
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
+					<li class={% if app.request.get('_route') == "home" %}"nav-item active"{% endif %}>
 						<a class="nav-link" href="{{ asset('home') }}">Accueil
 							<span class="sr-only">(current)</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Actualité</a>
+						<a class="nav-link " href="#">Actualité</a>
 					</li>
-					<li class="nav-item">
+					<li class={% if app.request.get('_route')  == "lesSorties" %}"nav-item active"{% endif %}>
 						<a class="nav-link" href="{{ asset('lesSorties') }}">Les sorties</a>
 					</li>
 
 					{% if app.user %}
-						<li class="nav-item">
+						<li class={% if  app.request.get('_route')  == "mesSorties" %}"nav-item active"{% endif %}>
 							<a class="nav-link" href="{{ asset('mesSorties') }}">Mes sorties</a>
 						</li>
 					</ul>

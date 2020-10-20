@@ -55,53 +55,43 @@
 					<div class="col-12 col-xl-4 row">
 						<div class="col-2">
 							{% for user in sortie.user %}
-								<img class="img-fluid" src="{{ asset('asset/uploads/img/' ~ user.image) }}">
+								{% if user.username == sortie.MainUser %}
+									<img class="img-fluid" src="{{ asset('asset/uploads/img/' ~ user.image) }}">
+								{% endif %}
 							{% endfor %}
 						</div>
 						<div class="col-10">
 							<h5>{{ sortie.title }}</h5>
-							
-								{% for user in sortie.user %}
-									<h6>{{ user.username }}</h6>
-								{% endfor %}
-						
+							<h6>{{ sortie.MainUser }}</h6>
 							<p>{{ sortie.content }}</p>
-							<p>{{ sortie.location }} | {{ sortie.date|format_datetime('full', 'short', locale='fr') }}</p>
-							<p>1/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
-								<i style="margin-left:3%" class="fas fa-user-plus"></i>
-								<i style="margin-left:3%" class="fas fa-user-minus"></i>
+							<p>{{ sortie.location }}
+								|
+								{{ sortie.date|format_datetime('full', 'short', locale='fr') }}</p>
+							<p>
+								{% set count = 0 %}
+								{% for user in sortie.user %}
+									{% set count = count + 1 %}
+								{% endfor %}
+								{{ count }}
+
+								/{{ sortie.numberUser }}<i style="margin-left:1%" class="fas fa-users"></i>
+								<a href='{{ url('addUserSortie',{"id":sortie.id}) }}'>
+									<i style="margin-left:3%" class="fas fa-user-plus"></i>
+								</a>
+								<a href='{{ url('deleteUserSortie',{"id":sortie.id}) }}'>
+									<i style="margin-left:3%" class="fas fa-user-minus"></i>
+								</a>
 							</p>
 						</div>
 					</div>
 				{% endfor %}
+				<div class="row d-flex justify-content-center col-12">
+					{{ knp_pagination_render(sorties) }}
+				</div>
 
-				<!-- Pagination -->
-				<nav aria-label="..." class="col-12 d-flex justify-content-center">
-					<ul class="pagination">
-						<li class="page-item disabled">
-							<a class="page-link" href="#" tabindex="-1">Previous</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">1</a>
-						</li>
-						<li class="page-item active">
-							<a class="page-link" href="#">2
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">3</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">Next</a>
-						</li>
-					</ul>
-				</nav>
-				<!-- Pagination -->
 			</div>
 		</div>
 	</section>
-
 	{#----------------------------------------- /LISTE DES SORTIES -----------------------------------------#}
 	{% include "footer.html.twig" %}
 {% endblock %}

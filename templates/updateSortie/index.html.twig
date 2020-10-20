@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% include "header.html.twig" %}
+	<div class="container">
+		{{ form_start(form) }}
+		{{ form_row(form.title) }}
+		{{ form_row(form.content) }}
+		{{ form_row(form.location) }}
+		{{ form_row(form.numberUser) }}
+		{{ form_row(form.date) }}
+		<a href='{{ asset('mesSorties') }}'>{{ form_widget(form.Valider) }}</a>
+		{{ form_end(form) }}
+	</div>
+	{% include "footer.html.twig" %}
+{% endblock %}
